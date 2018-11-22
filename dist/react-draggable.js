@@ -1869,8 +1869,6 @@
 	      _this.setState(newState);
 	    };
 
-	    console.log('creating react draggable testtesttest'); // eslint-disable-line
-
 	    _this.state = {
 	      // Whether or not we are currently dragging.
 	      dragging: false,
@@ -1931,15 +1929,27 @@
 	      // If this is controlled, we don't want to move it - unless it's dragging.
 	      var controlled = Boolean(this.props.position);
 	      var draggable = !controlled || this.state.dragging;
-	      var propPosition = this.props.position || {};
+	      var propPosition = this.props.position;
 	      var defaultPosition = this.props.defaultPosition || {};
 
-	      var transformOpts = {
-	        // Set left if horizontal drag is enabled
-	        x: propPosition.x || canDragX(this) && draggable ? this.state.x : defaultPosition.x,
+	      var xPosition = void 0;
+	      var yPosition = void 0;
 
-	        // Set top if vertical drag is enabled
-	        y: propPosition.y || canDragY(this) && draggable ? this.state.y : defaultPosition.y
+	      // Always use the user's position if they have specified one, otherwise allow controlled movement
+	      if (propPosition) {
+	        xPosition = propPosition.x;
+	        yPosition = propPosition.y;
+	      } else if (draggable) {
+	        if (canDragX(this)) xPosition = this.state.x;
+	        if (canDragY(this)) yPosition = this.state.y;
+	      }
+
+	      if (xPosition === undefined) xPosition = defaultPosition.x;
+	      if (yPosition === undefined) yPosition = defaultPosition.y;
+
+	      var transformOpts = {
+	        x: xPosition,
+	        y: yPosition
 	      };
 
 	      // If this element was SVG, we use the `transform` attribute.
