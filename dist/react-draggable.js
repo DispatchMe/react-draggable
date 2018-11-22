@@ -1869,6 +1869,8 @@
 	      _this.setState(newState);
 	    };
 
+	    console.log('creating react draggable testtesttest'); // eslint-disable-line
+
 	    _this.state = {
 	      // Whether or not we are currently dragging.
 	      dragging: false,
